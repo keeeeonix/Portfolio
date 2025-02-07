@@ -19,10 +19,6 @@ function render() {
     notes.forEach((note, index) => { 
     listElement.insertAdjacentHTML('beforeend', getNoteTemplate(note, index))
     })
-    //for(let i = 0; i < notes.length; i++) {
-    //    listElement.insertAdjacentHTML('beforeend', getNoteTemplate(notes[i], i))
-    //}
-    
 }
 render()
 
@@ -41,6 +37,7 @@ createBtn.onclick = function() {
     inputElement.value = ''
 }
 
+//onclick handler
 listElement.onclick = function(event) {
     if(event.target.dataset.index) {
         const index = parseInt(event.target.dataset.index)
@@ -76,4 +73,3 @@ function getNoteTemplate(note, index) { //template for new notes
         </li>
     `
 }
-
