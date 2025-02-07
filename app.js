@@ -1,39 +1,44 @@
 const inputElement = document.getElementById('title')
 const createBtn = document.getElementById('create')
 const listElement = document.getElementById('list')
-
-const notes = [{
-        title: 'do smth, you idiot',
+let notes = JSON.parse(localStorage.getItem('notes')) || [
+    {title: 'in progress',
         completed: false,
     },
     {
-        title:'still havent done anything',
+        title: 'done',
         completed: true,
-    },
+    }
 ]
-
+//web-page rendering
 function render() {
     listElement.innerHTML = ''
     if(notes.length === 0) {
-        listElement.innerHTML = "<p>No elements yet</p>"
+        listElement.innerHTML = "<p>No elements yet</p>" 
     }
-    for(let i = 0; i < notes.length; i++) {
-        listElement.insertAdjacentHTML('beforeend', getNoteTemplate(notes[i], i))
-    }
+    notes.forEach((note, index) => { 
+    listElement.insertAdjacentHTML('beforeend', getNoteTemplate(note, index))
+    })
+    //for(let i = 0; i < notes.length; i++) {
+    //    listElement.insertAdjacentHTML('beforeend', getNoteTemplate(notes[i], i))
+    //}
+    
 }
 render()
 
+// Adding new note to the list
 createBtn.onclick = function() {
-    if(inputElement.value.length === 0){
+    if(inputElement.value.length === 0){ 
         return
     }
-    const newNote = {
+    const newNote = {   
         title: inputElement.value,
         completed: false,
     }
     notes.push(newNote)
+    updateLocalStorage()
     render()
- inputElement.value = ''
+    inputElement.value = ''
 }
 
 listElement.onclick = function(event) {
@@ -47,10 +52,16 @@ listElement.onclick = function(event) {
             notes.splice(index, 1)
         }
     }
+    updateLocalStorage()
     render()
 }
 
-function getNoteTemplate(note, index) {
+
+function updateLocalStorage(){
+    localStorage.setItem('notes', JSON.stringify(notes))
+}
+
+function getNoteTemplate(note, index) { //template for new notes
     return `
         <li
             class="list-group-item d-flex justify-content-between align-items-center"
@@ -65,3 +76,4 @@ function getNoteTemplate(note, index) {
         </li>
     `
 }
+
